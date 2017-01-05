@@ -8,6 +8,8 @@ const
 
 var existing = []; // List of existing codes. Last month or 5000
 
+const db = process.env.SHORTN_DB || 'mongodb://localhost/shortn';
+
 var app = express();
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json({type:'application/json'}));
@@ -40,11 +42,12 @@ app.post('/', (req, res) => {
 app.get('/:code', (req, res) => {
   Site.findOne({code: req.params.code}, (err, site) => {
     if(!site) res.send('nope');
-    else res.redirect(site.url);
+    else
+      site.url.match(/(:\/\/)/i) ? res.redirect(site.url) : res.redirect('https://' + site.url);
   });
 });
 
-mongoose.connect('mongodb://localhost/shortn');
+mongoose.connect(db);
 mongoose.connection.on('open', () => {
   console.log(`mongo connected`);
   let aMonthAgo = new Date();
