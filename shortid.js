@@ -1,19 +1,15 @@
-const Site = require('./site');
+const Site = require('./Site');
 this.alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 this.characters = 5;
 
-exports.generate = (code, next) => {
-  code = make();
-  
-  Site.find({code: code}, (err, sites) => {
-    sites.length > 0 ? this.generate() : next(code);
-  });
-};
-
-exports.make = () => {
+exports.generate = existing => {
   let code;
-  for(i = 0; i < this.characters; i++) {
-    code += Math.random() * alphabet.length;
-  }
+  do {
+    code = '';
+    for(i = 0; i < this.characters; i++) {
+      code += this.alphabet[Math.floor(Math.random() * this.alphabet.length)];
+    }
+  } while(existing.indexOf(code) > -1)
+  
   return code;
-}
+};

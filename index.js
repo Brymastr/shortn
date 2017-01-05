@@ -3,8 +3,10 @@ const
   express = require('express'),
   http = require('http'),
   bodyParser = require('body-parser'),
-  Site = require('./site');
+  shortid = require('./shortid'),
+  Site = require('./Site');
 
+var existing = []; // List of existing codes. Last month or 5000
 
 var app = express();
 app.use(bodyParser.urlencoded({extended:true}));
@@ -22,9 +24,11 @@ app.use((req, res, next) => {
 });
 
 app.post('/', (req, res) => {
-  // TODO: everything
+  let code = shortid.generate(existing);
+
   new Site({
-    url: req.body.url
+    url: req.body.url,
+    code: code
   }).save((err, doc) => {
     if(err) console.log(err);
     res.send({
@@ -45,6 +49,11 @@ app.get('/:code', (req, res) => {
 mongoose.connect('mongodb://localhost/shortn');
 mongoose.connection.on('open', () => {
   console.log(`mongo connected`);
+  let aMonthAgo = new Date();
+  aMonthAgo.setDate(aMonthAgo.getMonth() - 1);
+  Site.find({date_created: {$gt: aMonthAgo}}).limit(5000).exec((err, sites) => {
+    sites.map(site => existing.push(site.code));
+  });
 });
 
 const port = 9000;
