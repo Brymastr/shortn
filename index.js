@@ -40,9 +40,7 @@ app.post('/', (req, res) => {
 app.get('/:code', (req, res) => {
   Site.findOne({code: req.params.code}, (err, site) => {
     if(!site) res.send('nope');
-    else res.send({
-      url: site.url
-    });
+    else res.redirect(site.url);
   });
 });
 
