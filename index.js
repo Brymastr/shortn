@@ -57,5 +57,5 @@ mongoose.connection.on('open', () => {
   });
 });
 
-const port = 9000;
+const port = process.env.SHORTN_PORT || 9000;
 app.listen(port, () => {console.log(`started on ${port}`)});
