@@ -1,4 +1,3 @@
-const Site = require('./Site');
 this.alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 this.characters = 5;
 
