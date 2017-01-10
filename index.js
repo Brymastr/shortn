@@ -13,6 +13,7 @@ const db = process.env.SHORTN_DB || 'mongodb://localhost/shortn';
 var app = express();
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json({type:'application/json'}));
+app.use(express.static(__dirname + '/public'));
 
 app.use('*', (req, res, next) => {
   req.method === 'POST' ? console.dir(`${req.method}: ${req.body.url}`) : console.log(`${req.method}: ${req.baseUrl}`);
@@ -45,6 +46,10 @@ app.get('/:code', (req, res) => {
     else
       site.url.match(/(:\/\/)/i) ? res.redirect(site.url) : res.redirect('https://' + site.url);
   });
+});
+
+app.get('/', (req, res) => {
+  res.send('./public/index.html');
 });
 
 mongoose.connect(db);
