@@ -8,7 +8,7 @@ const
 
 var existing = []; // List of existing codes. Last month or 5000
 
-const db = process.env.SHORTN_DB || 'mongodb://localhost/shortn';
+const db = process.env.ZIIP_DB || 'mongodb://localhost/ziip';
 
 var app = express();
 app.use(bodyParser.urlencoded({extended:true}));
@@ -62,5 +62,5 @@ mongoose.connection.on('open', () => {
   });
 });
 
-const port = process.env.SHORTN_PORT || 9000;
+const port = process.env.ZIIP_PORT || 9000;
 app.listen(port, () => {console.log(`started on ${port}`)});
