@@ -33,7 +33,7 @@ $(function() {
       $("input[type='text']").focus();
     } else {
       mode = 'shorten';
-      $("input[type='submit']").css({'width': '15%', 'border-radius': '0 5px 5px 0'}).val('SHORTN');
+      $("input[type='submit']").css({'width': '15%', 'border-radius': '0 5px 5px 0'}).val('SHORTEN');
       $("input[type='text']").css({'width': '85%'});
       $('#notify').css({'width': '0'});
       $('#code').css({'width': '0'}).text('');
