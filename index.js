@@ -53,6 +53,13 @@ app.get('/:code', (req, res) => {
   });
 });
 
+app.get('/:code/info', (req, res) => {
+  Site.findOne({code: req.params.code}, (err, site) => {
+    if(!site) res.send('nope');
+    else res.json(site);
+  });
+});
+
 app.get('/', (req, res) => {
   res.send('./public/index.html');
 });
