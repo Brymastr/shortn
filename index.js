@@ -31,7 +31,8 @@ app.post('/', (req, res) => {
 
   new Site({
     url: req.body.url,
-    code: code
+    code: code,
+    user: req.ip
   }).save((err, doc) => {
     if(err) console.log(err);
     res.send({
@@ -43,8 +44,12 @@ app.post('/', (req, res) => {
 app.get('/:code', (req, res) => {
   Site.findOne({code: req.params.code}, (err, site) => {
     if(!site) res.send('nope');
-    else
-      site.url.match(/(:\/\/)/i) ? res.redirect(site.url) : res.redirect('https://' + site.url);
+    else {
+      site.views++;
+      site.save((err, doc) => {
+        site.url.match(/(:\/\/)/i) ? res.redirect(site.url) : res.redirect('https://' + site.url);
+      });
+    }
   });
 });
 
