@@ -88,7 +88,6 @@ function send() {
   var url = $('#addressField').val();
   if(url == '') return false;
   $.post(base_url, {url: url}).done(function(data) {
-    console.log(data);
     $('#code').text(base_url + data.code).attr('data-clipboard-text', base_url + data.code);
   });
 }
