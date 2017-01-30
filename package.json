@@ -1,5 +1,5 @@
 {
-  "name": "shortn",
+  "name": "ziip",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
@@ -8,17 +8,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Brymastr/shortn.git"
+    "url": "git+https://github.com/Brymastr/ziip.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Brymastr/shortn/issues"
+    "url": "https://github.com/Brymastr/ziip/issues"
   },
-  "homepage": "https://github.com/Brymastr/shortn#readme",
+  "homepage": "https://github.com/Brymastr/ziip#readme",
   "dependencies": {
     "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
     "express": "^4.14.0",
-    "mongoose": "^4.7.5"
+    "mongoose": "^4.7.5",
+    "node-uuid": "^1.4.7"
   }
 }

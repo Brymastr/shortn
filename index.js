@@ -3,16 +3,22 @@ const
   express = require('express'),
   http = require('http'),
   bodyParser = require('body-parser'),
+  cookieParser = require('cookie-parser'),
   shortid = require('./shortid'),
-  Site = require('./Site');
+  Site = require('./Site'),
+  uuid = require('node-uuid');
+
+mongoose.Promise = Promise;
+
 
 var existing = []; // List of existing codes. Last month or 5000
 
 const db = process.env.ZIIP_DB || 'mongodb://localhost/ziip';
 
 var app = express();
-app.use(bodyParser.urlencoded({extended:true}));
-app.use(bodyParser.json({type:'application/json'}));
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json({type: 'application/json'}));
+app.use(cookieParser());
 app.use(express.static(__dirname + '/public'));
 
 app.use('*', (req, res, next) => {
@@ -26,13 +32,21 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use((req, res, next) => {
+  let cookie = req.cookies.user_cookie || uuid.v4();
+  res.cookie('user_cookie', cookie, {secure: true, expires: new Date(Date.now() + 31536000000)/* 2 year cookie life */});
+  next();
+});
+
 app.post('/', (req, res) => {
   let code = shortid.generate(existing);
 
   new Site({
     url: req.body.url,
     code: code,
-    user: req.ip
+    user_agent: req.headers['user-agent'],
+    user_ip: req.ip,
+    user_cookie: req.cookies.user_cookie
   }).save((err, doc) => {
     if(err) console.log(err);
     res.send({
@@ -58,6 +72,20 @@ app.get('/:code/info', (req, res) => {
     if(!site) res.send('nope');
     else res.json(site);
   });
+});
+
+app.get('/sites/count', (req, res) => {
+  Site.count({})
+    .then(count => res.json(count));
+});
+
+app.get('/sites/:count?', (req, res) => {
+  let limit = +req.params.count || 20;
+  Site.find({})
+    .limit(limit)
+    .sort('-date_created')
+    .then(sites => res.json(sites))
+    .catch(err => console.log(err));
 });
 
 app.get('/', (req, res) => {
