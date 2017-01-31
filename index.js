@@ -11,7 +11,7 @@ const
 mongoose.Promise = Promise;
 
 var existing = []; // List of existing codes. Last month or 5000
-
+const LIMIT = 5000;
 
 var app = express();
 app.use(express.static(__dirname + '/public'));
@@ -42,7 +42,8 @@ app.use((req, res, next) => {
 app.post('/', (req, res) => {
   shortid.generate(existing)
     .then(code => {
-      existing.push(code);
+      if(existing.length >= LIMIT) existing.shift();
+      existing.push(code) 
       return Site.create({
         url: req.body.url,
         code,
@@ -100,7 +101,7 @@ mongoose.connection.on('open', () => {
   console.log(`mongo connected`);
   let aMonthAgo = new Date();
   aMonthAgo.setDate(aMonthAgo.getMonth() - 1);
-  Site.find({date_created: {$gt: aMonthAgo}}).limit(5000).exec()
+  Site.find({date_created: {$gt: aMonthAgo}}).limit(LIMIT).exec()
     .then(sites => sites.map(site => existing.push(site.code)));
 });
 
