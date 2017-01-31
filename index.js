@@ -1,6 +1,7 @@
 const
   mongoose = require('mongoose'),
   express = require('express'),
+  compression = require('compression'),
   http = require('http'),
   bodyParser = require('body-parser'),
   cookieParser = require('cookie-parser'),
@@ -20,6 +21,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json({type: 'application/json'}));
 app.use(cookieParser());
 app.use(express.static(__dirname + '/public'));
+app.use(compression());
 
 app.use('*', (req, res, next) => {
   req.method === 'POST' ? console.dir(`${req.method}: ${req.body.url}`) : console.log(`${req.method}: ${req.baseUrl}`);
@@ -34,13 +36,15 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
   let cookie = req.cookies.user_cookie || uuid.v4();
-  res.cookie('user_cookie', cookie, {secure: true, expires: new Date(Date.now() + 31536000000)/* 2 year cookie life */});
+  let expiry = new Date();
+  expiry.setFullYear(expiry.getFullYear() + 5);
+  res.cookie('user_cookie', cookie, {secure: false, expires: expiry});
   next();
 });
 
 app.post('/', (req, res) => {
   let code = shortid.generate(existing);
-
+  console.log(req.cookies)
   new Site({
     url: req.body.url,
     code: code,
@@ -75,8 +79,7 @@ app.get('/:code/info', (req, res) => {
 });
 
 app.get('/sites/count', (req, res) => {
-  Site.count({})
-    .then(count => res.json(count));
+  Site.count({}).then(count => res.json(count));
 });
 
 app.get('/sites/:count?', (req, res) => {
