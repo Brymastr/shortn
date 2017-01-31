@@ -1,4 +1,4 @@
-FROM node:onbuild
+FROM node:alpine
 
 WORKDIR /src
 ADD . /src
