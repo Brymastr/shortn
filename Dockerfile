@@ -10,4 +10,4 @@ RUN npm i
 WORKDIR /src
 
 EXPOSE 80
-CMD ["node", "index.js"]
+CMD ["node", "index"]

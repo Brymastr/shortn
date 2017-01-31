@@ -125,5 +125,6 @@ var descriptions = [
   'bite sized.',
   'save on bytes.',
   'try it on your friends!',
-  'hunny, I shrunk the url.'
+  'hunny, I shrunk the url.',
+  'it\'s so cute!'
 ];

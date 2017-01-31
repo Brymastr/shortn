@@ -1,6 +1,9 @@
 const
   mongoose = require('mongoose'),
   Schema = mongoose.Schema;
+  
+mongoose.Promise = Promise;
+
 
 module.exports = mongoose.model('Site', Schema({
   url: String,
