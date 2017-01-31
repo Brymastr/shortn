@@ -21,7 +21,7 @@ app.use(cookieParser());
 app.use(compression());
 
 app.use('*', (req, res, next) => {
-  req.method === 'POST' ? console.dir(`${req.method}: ${req.body.url}`) : console.log(`${req.method}: ${req.baseUrl}`);
+  req.method === 'POST' ? console.log(`${req.method}: ${req.body.url}`) : console.log(`${req.method}: ${req.baseUrl}`);
   next();
 });
 
