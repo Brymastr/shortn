@@ -14,10 +14,10 @@ var existing = []; // List of existing codes. Last month or 5000
 
 
 var app = express();
+app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json({type: 'application/json'}));
 app.use(cookieParser());
-app.use(express.static(__dirname + '/public'));
 app.use(compression());
 
 app.use('*', (req, res, next) => {
@@ -93,9 +93,6 @@ app.get('/sites/:count?', (req, res) => {
     .catch(err => res.send('nothing to see here'));
 });
 
-app.get('/', (req, res) => {
-  res.send('./public/index.html');
-});
 
 const db = process.env.ZIIP_DB || 'mongodb://localhost/ziip';
 mongoose.connect(db);

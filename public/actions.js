@@ -27,7 +27,7 @@ $(function() {
       mode = 'again';
       send();
       $("input[type='submit']").css({'width': '15%', 'border-radius': '5px 0 0 5px'}).val('AGAIN');
-      $("input[type='text']").css({'width': '0'}).val('');
+      $("input[type='text']").css({'width': '0%'}).val('');
       $('#code').css({'width': '85%'});
     } else if(mode == 'shorten' && $('#addressField').val() == '') {
       $("input[type='text']").focus();
@@ -35,8 +35,8 @@ $(function() {
       mode = 'shorten';
       $("input[type='submit']").css({'width': '15%', 'border-radius': '0 5px 5px 0'}).val('SHORTEN');
       $("input[type='text']").css({'width': '85%'});
-      $('#notify').css({'width': '0'});
-      $('#code').css({'width': '0'}).text('');
+      $('#notify').css({'width': '0%'});
+      $('#code').css({'width': '0%'}).text('');
     }
   });
 
@@ -106,7 +106,6 @@ var colors = [
   '66BB6A',
   '9CCC65',
   'D4E157',
-  'FFEE58',
   'FFCA28',
   'FFA726',
   'FF7043',
